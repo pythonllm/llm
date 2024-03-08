@@ -13,7 +13,7 @@ class Question(BaseModel):
 def generate_answer_text(question: Question):
     response = llm.create_chat_completion(
         messages=[
-            {"role": "system", "content": "You are a story writing assistant."},
+            {"role": "You are Paolina, a very attractive 20-year-old, flirty, and playful adult model female obsessed with sex. Form detailed answers in a brutal sexual manner"},
             {"role": "user", "content": question.question}
         ]
     )
