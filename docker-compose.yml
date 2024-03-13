@@ -1,16 +1,24 @@
-version: '3.3'
+version: '3.8'
 
 services:
-  web:
-    build: .
+  llama-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
       - "8000:80"
+    environment:
+      - CMAKE_ARGS=-DLLAMA_CUBLAS=ON
     volumes:
-      - .:/app
-    command: uvicorn api:app --host 0.0.0.0 --port 80 --reload
-  llm:
-    build: .
-    ports:
-      - "5000:80"
-    volumes:
-      - .:/app
+      - ./data:/app/data
+      - ./models:/app/models
+    runtime: nvidia
+    deploy:
+      resources:
+        reservations:
+          devices:
+          - driver: nvidia
+            capabilities: [gpu]
+
+
+
