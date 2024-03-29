@@ -1,8 +1,10 @@
 import os
 from fastapi import FastAPI, File, UploadFile
 from pydantic import BaseModel
-from connection import llm, medium_whisper_model, tiny_whisper_model
+
 from typing import List
+
+from paylina_wisper_tiny.connection import llm, tiny_whisper_model
 
 app = FastAPI()
 
@@ -71,16 +73,10 @@ async def get_embeddings(texts: Texts):
 @app.post("/transcribe_audio/")
 async def transcribe_audio(
     file: UploadFile = File(...),
-    model_size: str = "medium",
     language: str = None,
 ):
-    if model_size == "medium":
-        model = medium_whisper_model
-    elif model_size == "large":
-        # model = large_whisper_model
-        return {"massage": "It doesn't work now (╯°□°）╯︵ ┻━┻ "}
-    else:
-        model = tiny_whisper_model
+    model = tiny_whisper_model
+
     contents = await file.read()
     temp_dir = "temp"
     temp_file_path = f"{temp_dir}/{file.filename}"
